@@ -391,9 +391,9 @@ Returns the created process."
                               buffer-file-name
                               (string-prefix-p project-root (file-truename buffer-file-name)))))
     (setq cargo-process-last-command (list name command cmd))
-    (let ((default-directory (or (cargo-process--workspace-root)
-                                 default-directory)))
-      (compilation-start cmd 'cargo-process-mode (lambda(_) buffer)))
+    (let ((default-directory (or ; (cargo-process--workspace-root)
+                              default-directory)))
+      (compilation-start (format "echo Entering directory \"'%s'\"; %s" (cargo-process--workspace-root) cmd) 'cargo-process-mode (lambda(_) buffer)))
     (end-of-buffer-other-window buffer)
     (let ((process (get-buffer-process buffer)))
       (set-process-sentinel process 'cargo-process--finished-sentinel)
